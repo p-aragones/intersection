@@ -1,0 +1,180 @@
+#!/usr/bin/python3
+
+##
+## EPITECH PROJECT, 2020
+## 104intersection
+## File description:
+## math project
+##
+
+from sys import argv as av
+import math
+
+ac = len(av)
+
+def display_h():
+    print("USAGE")
+    print("\t./104intersection opt xp yp xp xv yv zv p")
+    print("\nDESCRIPTION")
+    print("\topt\t\tsurface option: 1 for a sphere, 2 for a cylinder, 3 for a cone")
+    print("\t(xp, yp, zp)\tcoordinates of a point by which the light ray passes through")
+    print("\t(xv, yv, zv)\tcoordinates of a vector parallel to the light ray")
+    print("\tp\t\tparameter: radius of the sphere, radius of the cylinder, or")
+    print("\t\t\tangle formed by the cone and the Z-axis")
+    
+def exec_sphere():
+    xp = int(av[2])
+    yp = int(av[3])
+    zp = int(av[4])
+    xv = int(av[5])
+    yv = int(av[6])
+    zv = int(av[7])
+    p = int(av[8])
+
+    if p <= 0:
+        exit(84)
+
+    print("Sphere of radius", p)
+
+    A = xv**2 + yv**2 + zv**2
+    B = 2*(xv * xp) + 2*(yv * yp) + 2*(zv * zp)
+    C = xp**2 + yp**2 + zp**2 - p**2
+
+    print("Line passing through the point (%.f, %.f, %.f) and parallel to the vector (%.f, %.f, %.f)" % (xp, yp, zp, xv, yv, zv))
+
+    intersection = B**2 - (4 * A * C)
+
+    if intersection < 0:
+        print("No intersection point.")
+    if intersection == 0:
+        t = (-B) / (2 * A)
+        print ("1 intersection point:")
+        x = t * xv + xp
+        y = t * yv + yp
+        z = t * zv + zp
+        print ("(%.3f, %.3f, %.3f)" % (x, y, z))
+    if (intersection > 0):
+        t = (-B - math.sqrt(intersection))/ (2 * A)
+        t2 = (-B + math.sqrt(intersection))/ (2 * A)
+        print ("2 intersection points:")
+        x = t2 * xv + xp
+        y = t2 * yv + yp
+        z = t2 * zv + zp
+        x2 = t * xv + xp
+        y2 = t * yv + yp
+        z2 = t * zv + zp
+        print ("(%.3f, %.3f, %.3f)" % (x, y, z))
+        print ("(%.3f, %.3f, %.3f)" % (x2, y2, z2))
+
+def exec_cylinder():
+    xp = int(av[2])
+    yp = int(av[3])
+    zp = int(av[4])
+    xv = int(av[5])
+    yv = int(av[6])
+    zv = int(av[7])
+    p = int(av[8])
+
+    if p <= 0:
+        exit(84)
+    if xv == 0 and yv == 0 and zv == 0:
+        exit(84)
+    
+    print("Cylinder of radius", p)
+
+    A = xv**2 + yv**2
+    B = 2*(xv * xp) + 2*(yv * yp)
+    C = xp**2 + yp**2 - p**2
+
+    print("Line passing through the point (%.f, %.f, %.f) and parallel to the vector (%.f, %.f, %.f)" % (xp, yp, zp, xv, yv, zv))
+
+    if A == 0:
+        print("There is an infinite number of intersection points.")
+        exit(0)
+
+    intersection = B**2 - (4 * A * C)
+
+    if intersection < 0:
+        print("No intersection point.")
+    if intersection == 0:
+        t = (-B) / (2 * A)
+        print ("1 intersection point:")
+        x = t * xv + xp
+        y = t * yv + yp
+        z = t * zv + zp
+        print ("(%.3f, %.3f, %.3f)" % (x, y, z))
+    if (intersection > 0):
+        t = (-B - math.sqrt(intersection))/ (2 * A)
+        t2 = (-B + math.sqrt(intersection))/ (2 * A)
+        print ("2 intersection points:")
+        x = t2 * xv + xp
+        y = t2 * yv + yp
+        z = t2 * zv + zp
+        x2 = t * xv + xp
+        y2 = t * yv + yp
+        z2 = t * zv + zp
+        print ("(%.3f, %.3f, %.3f)" % (x, y, z))
+        print ("(%.3f, %.3f, %.3f)" % (x2, y2, z2))
+
+def exec_cone():
+    xp = int(av[2])
+    yp = int(av[3])
+    zp = int(av[4])
+    xv = int(av[5])
+    yv = int(av[6])
+    zv = int(av[7])
+    p = int(av[8])
+
+    if p <= 0 or p > 90:
+          exit(84)
+
+    print ("Cone with a", p, "degree angle")
+
+    radiants = p * math.pi / 180.0
+
+    A = xv * xv + yv * yv - (zv * zv) * (math.tan(radiants))**2
+    B = 2*(xv * xp) + 2*(yv * yp) - (2*(zv * zp)) * (math.tan(radiants))**2
+    C = xp * xp + yp * yp - (zp * zp) * (math.tan(radiants))**2
+
+    print ("Line passing through the point (%.f, %.f, %.f) and parallel to the vector (%.f, %.f, %.f)" % (xp, yp, zp, xv, yv, zv))
+
+    intersection = B**2 - (4 * A * C)
+
+    if intersection < 0:
+        print("No intersection point.")
+    if intersection == 0:
+        t = (-B) / (2 * A)
+        print ("1 intersection point:")
+        x = t * xv + xp
+        y = t * yv + yp
+        z = t * zv + zp
+        print ("(%.3f, %.3f, %.3f)" % (x, y, z))
+    if (intersection > 0):
+        t = (-B - math.sqrt(intersection))/ (2 * A)
+        t2 = (-B + math.sqrt(intersection))/ (2 * A)
+        print ("2 intersection points:")
+        x = t2 * xv + xp
+        y = t2 * yv + yp
+        z = t2 * zv + zp
+        x2 = t * xv + xp
+        y2 = t * yv + yp
+        z2 = t * zv + zp
+        print ("(%.3f, %.3f, %.3f)" % (x, y, z))
+        print ("(%.3f, %.3f, %.3f)" % (x2, y2, z2))
+
+def main():
+    if ac == 2 and av[1] == "-h":
+        display_h()
+        exit (0)
+    if ac != 9:
+        exit(84)
+    elif av[1] == "1":
+        exec_sphere()
+    elif av[1] == "2":
+        exec_cylinder()
+    elif av[1] == "3":
+        exec_cone()
+    else:
+        exit(84)
+if __name__ == "__main__":
+    main()
